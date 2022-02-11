@@ -20,7 +20,7 @@ export const QUESTIONS = [
             "Compresa tra 7°C e 35°C",
             "Compresa tra 10°C e 30°C",
         ],
-        correctAnswer: "Compresa tra 5 e 52 °C",
+        correctAnswer: "Compresa tra 5°C e 52°C",
         explanation: "Il Codice ASME Sezione V Articolo 6 paragrafo T-652 specifica che le temperature, per un controllo standard, devono essere comprese tra 40°F e 125°F (ossia 5°C e 52°C. "
     },
     {
