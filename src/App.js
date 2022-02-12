@@ -3,12 +3,11 @@ import React from 'react';
 import {Header} from './Header';
 import {Questions} from './Questions.jsx';
 
-
 function App() {
   return (
       <>
         <Header />
-       <Questions />
+       <Questions maxQuestions={2}/>
       </>
   );
 }
