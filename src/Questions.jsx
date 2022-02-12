@@ -1,15 +1,38 @@
 import {Container, Typography, Grid, Button, ButtonGroup} from '@mui/material';
+
 import { Link as RouterLink, MemoryRouter } from 'react-router-dom';
 import { StaticRouter } from 'react-router-dom/server';
+
 
 import React from 'react';
 import {useState} from 'react';
 import {QUESTIONS} from './question-data';
 import PropTypes from "prop-types";
 
+const LinkBehavior = React.forwardRef((props, ref) => (
+	<RouterLink ref={ref} to="./Results.jsx" {...props} role={undefined} />
+  ));
+
+  LinkBehavior.displayName = 'LinkBehavior';
+  
+  function Router(props) {
+	const { children } = props;
+	if (typeof window === 'undefined') {
+		return <StaticRouter location="./Results.jsx">{children}</StaticRouter>;
+	}
+  
+	return <MemoryRouter>{children}</MemoryRouter>;
+  }
+  
+  Router.propTypes = {
+	children: PropTypes.node,
+  };
+
+  
+
 let newQUESTIONS = [...QUESTIONS];
-
-
+  
+  
 export function Questions(props){
 	
 	const [randomQuestion, setRandomQuestion] = useState(Math.floor(Math.random()*newQUESTIONS.length));
@@ -54,7 +77,6 @@ export function Questions(props){
 	return (
 		<>
 			<Container maxWidth="lg">
-{console.log(maxQuestions)}
 			<Typography variant="h5" 
 			sx={{ 
 				marginTop: 10,
@@ -115,12 +137,12 @@ export function Questions(props){
 			{(showAnswer && maxQuestions === 0) && (
 				<Grid container justifyContent="flex-end">
 					<Router>
-						<Button 
-							component={RouterLink} to="./Results.jsx"
-							variant="contained" 
-							points={points}
-						>
-							{points}Vedi risultati
+						<Button component={RouterLink} to="/Results.jsx">
+							With prop forwarding
+						</Button>
+						<br />
+						<Button component={LinkBehavior}>
+							With {points} inlining
 						</Button>
 					</Router>
 				</Grid>
@@ -130,6 +152,7 @@ export function Questions(props){
 		</>
 	)
   }
+
 
   Questions.propTypes = {
     maxQuestions: PropTypes.number

@@ -1,11 +1,10 @@
+import { Typography } from '@mui/material';
 import React from 'react';
-import {Header} from './Header';
 
-export function Results(props){
+export function Results(){
 	return(
-		<div>
-			<Header />
-			{props.points}!!
-		</div>
+		<Typography>
+			PIPPO
+		</Typography>
 	)
 }
