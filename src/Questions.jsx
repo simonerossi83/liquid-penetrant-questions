@@ -1,41 +1,17 @@
 import {Container, Typography, Grid, Button, ButtonGroup} from '@mui/material';
 
-import { Link as RouterLink, MemoryRouter } from 'react-router-dom';
-import { StaticRouter } from 'react-router-dom/server';
-
-
 import React from 'react';
 import {useState} from 'react';
 import {QUESTIONS} from './question-data';
 import PropTypes from "prop-types";
 
-const LinkBehavior = React.forwardRef((props, ref) => (
-	<RouterLink ref={ref} to="./Results.jsx" {...props} role={undefined} />
-  ));
-
-  LinkBehavior.displayName = 'LinkBehavior';
-  
-  function Router(props) {
-	const { children } = props;
-	if (typeof window === 'undefined') {
-		return <StaticRouter location="./Results.jsx">{children}</StaticRouter>;
-	}
-  
-	return <MemoryRouter>{children}</MemoryRouter>;
-  }
-  
-  Router.propTypes = {
-	children: PropTypes.node,
-  };
-
-  
-
-let newQUESTIONS = [...QUESTIONS];
-  
+let newQUESTIONS = QUESTIONS;
+let method = 'liquidi';
+let type = 'specifico';
   
 export function Questions(props){
 	
-	const [randomQuestion, setRandomQuestion] = useState(Math.floor(Math.random()*newQUESTIONS.length));
+	const [randomQuestion, setRandomQuestion] = useState(Math.floor(Math.random()*newQUESTIONS[method][type].length));
 	const [colorAnswer, setcolorAnswer] = useState(Array(4).fill('primary'));
 	const [disabled, setDisabled] = useState(Array(4).fill(false));
 	const [variant, setVariant] = useState(Array(4).fill('outlined'));
@@ -45,8 +21,8 @@ export function Questions(props){
 	const [maxQuestions, setMaxQuestions] = useState(props.maxQuestions-1);
 
 	const changeQuestion = () => {
-		newQUESTIONS = newQUESTIONS.filter((el,index) => index != randomQuestion);
-		setRandomQuestion(Math.floor(Math.random()*newQUESTIONS.length));
+		newQUESTIONS[method][type] = newQUESTIONS[method][type].filter((el,index) => el[index] != randomQuestion);
+		setRandomQuestion(Math.floor(Math.random()*newQUESTIONS[method][type].length));
 		setcolorAnswer(Array(4).fill('primary'));
 		setVariant(Array(4).fill('outlined'));
 		setDisabled(Array(4).fill(false));
@@ -59,8 +35,8 @@ export function Questions(props){
 		let newColorArray = [...colorAnswer];
 		let newVariantArray = [...variant];
 		let newDisabledArray = Array(4).fill(true);
-		newColorArray[target.id] = target.value === newQUESTIONS[randomQuestion].correctAnswer ? 'success' : 'error';
-		let result = target.value === newQUESTIONS[randomQuestion].correctAnswer;
+		newColorArray[target.id] = target.value === newQUESTIONS[method][type][randomQuestion].correctAnswer ? 'success' : 'error';
+		let result = target.value === newQUESTIONS[method][type][randomQuestion].correctAnswer;
 		setCorrect(result);
 		newVariantArray[target.id] = 'contained';
 		setcolorAnswer(newColorArray);
@@ -82,7 +58,7 @@ export function Questions(props){
 				marginTop: 10,
 				marginBottom: 10
 				}}> 
-				{newQUESTIONS[randomQuestion].question}
+				{newQUESTIONS[method][type][randomQuestion].question}
 			</Typography>
 
 			<ButtonGroup orientation="vertical" 
@@ -90,7 +66,7 @@ export function Questions(props){
 				display: 'flex',
 				marginBottom: 10
 				}}> 
-					{newQUESTIONS[randomQuestion].answers.map( (question, index) => (
+					{newQUESTIONS[method][type][randomQuestion].answers.map( (question, index) => (
 						<Button 
 							fullwidth 
 							id={index}
@@ -118,10 +94,10 @@ export function Questions(props){
 					sx={{ 
 						marginBottom: 10
 						}} >
-						{correct ? 'Corretto!' : 'Sbagliato :('}
+						{correct ? 'Corretto' : 'Sbagliato'}
 					</Typography>
 					<Typography>
-						{newQUESTIONS[randomQuestion].explanation}
+						{newQUESTIONS[method][type][randomQuestion].explanation}
 					</Typography>
 					<Grid container justifyContent="flex-end">
 						<Button 
@@ -136,15 +112,9 @@ export function Questions(props){
 
 			{(showAnswer && maxQuestions === 0) && (
 				<Grid container justifyContent="flex-end">
-					<Router>
-						<Button component={RouterLink} to="/Results.jsx">
-							With prop forwarding
+						<Button >
+							Vedi i risultati {points}
 						</Button>
-						<br />
-						<Button component={LinkBehavior}>
-							With {points} inlining
-						</Button>
-					</Router>
 				</Grid>
 			)}
 
