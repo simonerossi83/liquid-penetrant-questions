@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/liquid-penetrant-questions/static/css/main.073c9b0a.css",
+    "main.js": "/liquid-penetrant-questions/static/js/main.3c86ace0.js",
+    "index.html": "/liquid-penetrant-questions/index.html",
+    "main.073c9b0a.css.map": "/liquid-penetrant-questions/static/css/main.073c9b0a.css.map",
+    "main.3c86ace0.js.map": "/liquid-penetrant-questions/static/js/main.3c86ace0.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.073c9b0a.css",
+    "static/js/main.3c86ace0.js"
+  ]
+}
