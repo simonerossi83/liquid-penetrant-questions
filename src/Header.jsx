@@ -10,7 +10,7 @@ export function Header(){
 				Marco Arrigoni
 			</Typography>
 			<Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align="right">
-				Domande di verifica per liquidi penetranti
+				Esame di liquidi penetranti - Livello 2
 			</Typography>
 		</Toolbar>
 		</AppBar>

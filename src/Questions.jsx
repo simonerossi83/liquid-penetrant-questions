@@ -5,7 +5,7 @@ import {useState} from 'react';
 import {QUESTIONS} from './question-data';
 import PropTypes from "prop-types";
 
-let newQUESTIONS = QUESTIONS;
+let newQUESTIONS = {...QUESTIONS};
 let method = 'liquidi';
 let type = 'specifico';
   
@@ -18,7 +18,8 @@ export function Questions(props){
 	const [showAnswer, setShowAnswer] = useState(false);
 	const [correct, setCorrect] = useState(false);
 	const [points, setPoints] = useState(0);
-	const [maxQuestions, setMaxQuestions] = useState(props.maxQuestions-1);
+	const [maxQuestions, setMaxQuestions] = useState(props.maxSpecificQuestions-1);
+	const [counter, setCounter] = useState(1);
 
 	const changeQuestion = () => {
 		newQUESTIONS[method][type] = newQUESTIONS[method][type].filter((el,index) => el[index] != randomQuestion);
@@ -28,8 +29,9 @@ export function Questions(props){
 		setDisabled(Array(4).fill(false));
 		setShowAnswer(false);
 		setCorrect(false);
-		setMaxQuestions(prev => prev - 1)
-;	}
+		setMaxQuestions(prev => prev - 1);
+		setCounter(prev => prev + 1);
+	}
 
 	const checkAnswer = ({target}) => {
 		let newColorArray = [...colorAnswer];
@@ -49,10 +51,17 @@ export function Questions(props){
 		}
 	}
 
+	const handleFinish = () => {
+		props.isFinish(true, points)
+	}
+
 	
 	return (
 		<>
 			<Container maxWidth="lg">
+			<Typography align='center'>
+						Domanda {counter} di {props.maxSpecificQuestions}
+			</Typography>
 			<Typography variant="h5" 
 			sx={{ 
 				marginTop: 10,
@@ -111,11 +120,23 @@ export function Questions(props){
 			)}
 
 			{(showAnswer && maxQuestions === 0) && (
-				<Grid container justifyContent="flex-end">
-						<Button >
-							Vedi i risultati {points}
-						</Button>
-				</Grid>
+				<>
+					<Typography 
+						variant="h4"
+						sx={{ 
+							marginBottom: 10
+							}} >
+							{correct ? 'Corretto' : 'Sbagliato'}
+						</Typography>
+						<Typography>
+							{newQUESTIONS[method][type][randomQuestion].explanation}
+						</Typography>
+					<Grid container justifyContent="flex-end">
+							<Button onClick={handleFinish} variant="contained">
+								Vedi i risultati
+							</Button>
+					</Grid>
+				</>
 			)}
 
 		</Container>
@@ -125,5 +146,6 @@ export function Questions(props){
 
 
   Questions.propTypes = {
-    maxQuestions: PropTypes.number
+    maxSpecificQuestions: PropTypes.number,
+	isFinish: PropTypes.bool
 };
